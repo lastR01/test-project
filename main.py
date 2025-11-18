@@ -3,6 +3,7 @@ import uuid
 
 class Notifications:
     _cnt = 0
+    priority = "normal"
     def __init__(self, message: str, time_to_send: datetime, sent_at: datetime = None):
         Notifications._cnt += 1
         self.id = Notifications._cnt
