@@ -1,16 +1,24 @@
 from datetime import datetime
 import uuid
+from typing import Literal
+
 
 class Notifications:
     _cnt = 0
-    priority = "normal"
-    def __init__(self, message: str, time_to_send: datetime, sent_at: datetime = None):
+    def __init__(self,
+                 message: str,
+                 time_to_send: datetime,
+                 priority: Literal["high", "normal"],
+                 sent_at: datetime = None):
+
         Notifications._cnt += 1
         self.id = Notifications._cnt
         self.user_id = str(uuid.uuid4())
         self.message = message
         self.time_to_send = time_to_send
         self.sent_at = sent_at
+        self.priority = priority
+
 
 class Scheduler:
     def __init__(self):
@@ -22,7 +30,8 @@ class Scheduler:
             "user_id": notifications.user_id,
             "message": notifications.message,
             "time_to_send": notifications.time_to_send,
-            "sent_at": notifications.sent_at
+            "sent_at": notifications.sent_at,
+            "priority": notifications.priority,
         }
         self.scheduler_lst.append(dct_data)
 
@@ -36,8 +45,8 @@ class Scheduler:
         print(f"Send notification {notification_data}")
 
 
-notification = Notifications("Test", datetime(2025, 11, 14, 16, 30), )
-notification_2 = Notifications("Test 2", datetime(2025, 11, 14, 16, 35), )
+notification = Notifications("Test", datetime(2025, 11, 14, 16, 30), "high")
+notification_2 = Notifications("Test 2", datetime(2025, 11, 14, 16, 35), "normal")
 scheduler = Scheduler()
 scheduler.schedule(notification)
 scheduler.schedule(notification_2)
